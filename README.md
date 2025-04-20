@@ -1,98 +1,101 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Kaggle Team Leaderboard Fetcher
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS application that fetches and displays team leaderboard data from Kaggle competitions.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- Fetches team leaderboard data from any public Kaggle competition
+- Displays team rankings, scores, and submission dates
+- Real-time updates of leaderboard information
+- Dockerized for easy deployment
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
 
-## Project setup
+- Node.js (v14 or higher)
+- Docker and Docker Compose
+- Kaggle API credentials
 
-```bash
-$ npm install
-```
+## Getting Started
 
-## Compile and run the project
+### 1. Kaggle API Setup
+
+1. Go to your Kaggle account settings
+2. Scroll down to the "API" section
+3. Click "Create New API Token"
+4. This will download a `kaggle.json` file
+5. Place this file in `~/.kaggle/kaggle.json` on your local machine
+
+### 2. Local Development Setup
 
 ```bash
-# development
-$ npm run start
+# Clone the repository
+git clone <repository-url>
+cd kaggle-team-leaderboard-fetcher
 
-# watch mode
-$ npm run start:dev
+# Install dependencies
+npm install
 
-# production mode
-$ npm run start:prod
+# Start the development server
+npm run start:dev
 ```
 
-## Run tests
+### 3. Docker Setup
 
 ```bash
-# unit tests
-$ npm run test
+# Build and start the container
+docker-compose up --build
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# The application will be available at http://localhost:3000
 ```
 
-## Deployment
+## API Endpoints
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+### Get Leaderboard
+```
+GET /leaderboard/:competitionSlug
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Parameters:
+- `competitionSlug`: The URL slug of the Kaggle competition (e.g., 'titanic')
 
-## Resources
+Response:
+```json
+[
+  {
+    "TeamId": "12345678",
+    "TeamName": "Example Team",
+    "SubmissionDate": "2025-04-20 12:34:56.789000",
+    "Score": "1.00000"
+  },
+  ...
+]
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## Environment Variables
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- `NODE_ENV`: Application environment (development/production)
+- `PORT`: Server port (default: 3000)
 
-## Support
+## Docker Configuration
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+The application is configured to run in a Docker container with:
 
-## Stay in touch
+- Python 3.9 base image
+- Kaggle CLI installed
+- Node.js environment
+- Volume mounts for:
+  - Application code
+  - Node modules
+  - Kaggle credentials
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License - see the LICENSE file for details.
