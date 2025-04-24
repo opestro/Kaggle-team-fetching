@@ -26,6 +26,9 @@ ENV KAGGLE_CONFIG_DIR=/root/.kaggle
 # Add virtual environment bin to PATH
 ENV PATH="/opt/kaggle-env/bin:${PATH}"
 
+# Install NestJS CLI globally
+RUN npm install -g @nestjs/cli
+
 # Copy package.json and install dependencies
 COPY package*.json ./
 RUN npm install
