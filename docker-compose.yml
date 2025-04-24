@@ -7,18 +7,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./src:/app/src
-    environment:
-      - NODE_ENV=development
-    command: npm run start:dev
 
   kaggle-service:
     build:
       context: .
       dockerfile: Dockerfile.kaggle
     volumes:
-      - .:/app
       - ~/.kaggle:/root/.kaggle
     environment:
       - KAGGLE_USERNAME=${KAGGLE_USERNAME}
