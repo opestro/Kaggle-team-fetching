@@ -36,9 +36,9 @@ export class AppService {
    * @returns The path to the Kaggle CLI executable
    */
   private getKagglePath(): string {
-    // Check if we're running in Docker (VIRTUAL_ENV will be set in docker-compose.yml)
+    // Check if we're running in Docker (VIRTUAL_ENV will be set in dockerfile)
     if (process.env.VIRTUAL_ENV) {
-      // In Docker with virtual environment
+      // In Docker with virtual environment already in PATH
       return 'kaggle';
     } else {
       // Local environment with local virtual environment
