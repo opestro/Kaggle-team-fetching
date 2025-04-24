@@ -36,6 +36,9 @@ RUN npm install
 # Copy application files
 COPY . .
 
+# Install TypeScript dependencies and build
+RUN npm install --save-dev @types/node @types/csv-parser
+
 # Create requirements.txt if it doesn't exist
 RUN [ -f requirements.txt ] || echo "kaggle" > requirements.txt
 

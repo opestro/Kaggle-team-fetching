@@ -16,5 +16,6 @@ services:
     command: >
       bash -c "
         chmod 600 /root/.kaggle/kaggle.json &&
+        npm install &&
         npm run start:dev
       " 
