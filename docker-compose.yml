@@ -7,14 +7,17 @@ services:
       - "3001:3000"
     volumes:
       - .:/app
-      - /app/node_modules  # This prevents the host node_modules from mounting over container node_modules
-      - ~/.kaggle:/root/.kaggle  # Mount Kaggle credentials
+      - /app/node_modules
     environment:
       - NODE_ENV=development
       - PATH=/opt/kaggle-env/bin:${PATH}
       - VIRTUAL_ENV=/opt/kaggle-env
+      # - KAGGLE_USERNAME=your_username
+      # - KAGGLE_KEY=your_api_key
     command: >
       bash -c "
+        mkdir -p /root/.kaggle &&
+        echo '{\"username\":\"$$KAGGLE_USERNAME\",\"key\":\"$$KAGGLE_KEY\"}' > /root/.kaggle/kaggle.json &&
         chmod 600 /root/.kaggle/kaggle.json &&
         npm run start:dev
       "
