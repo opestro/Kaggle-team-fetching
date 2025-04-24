@@ -11,4 +11,10 @@ services:
       - ~/.kaggle:/root/.kaggle  # Mount Kaggle credentials
     environment:
       - NODE_ENV=development
-    command: npm run start:dev 
+      - PATH=/opt/kaggle-env/bin:${PATH}
+      - VIRTUAL_ENV=/opt/kaggle-env
+    command: >
+      bash -c "
+        chmod 600 /root/.kaggle/kaggle.json &&
+        npm run start:dev
+      " 

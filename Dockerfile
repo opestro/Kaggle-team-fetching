@@ -1,28 +1,42 @@
- # Use Python 3.9 as base image
-FROM python:3.9-slim
+# Use Node.js with Python as base image
+FROM node:18-slim
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install Python and other dependencies
 RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-venv \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Kaggle CLI
-RUN pip install kaggle
+# Create and activate a virtual environment
+RUN python3 -m venv /opt/kaggle-env
 
-# Copy the kaggle.json file (this should be mounted at runtime)
-# The kaggle.json file should be placed in ~/.kaggle/kaggle.json
+# Install Kaggle in the virtual environment
+RUN . /opt/kaggle-env/bin/activate && \
+    pip install kaggle && \
+    deactivate
+
+# Configure Kaggle directory
 ENV KAGGLE_CONFIG_DIR=/root/.kaggle
+
+# Add virtual environment bin to PATH
+ENV PATH="/opt/kaggle-env/bin:${PATH}"
+
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm install
 
 # Copy application files
 COPY . .
 
-# Install Python dependencies
-RUN pip install -r requirements.txt
+# Create requirements.txt if it doesn't exist
+RUN [ -f requirements.txt ] || echo "kaggle" > requirements.txt
 
-# Expose the port the app runs on
+# Expose port
 EXPOSE 3000
 
 # Command to run the application

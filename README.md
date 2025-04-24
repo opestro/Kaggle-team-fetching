@@ -12,7 +12,8 @@ A NestJS application that fetches and displays team leaderboard data from Kaggle
 ## Prerequisites
 
 - Node.js (v14 or higher)
-- Docker and Docker Compose
+- Python 3 (for Kaggle CLI in virtual environment)
+- Docker and Docker Compose (optional)
 - Kaggle API credentials
 
 ## Getting Started
@@ -24,6 +25,7 @@ A NestJS application that fetches and displays team leaderboard data from Kaggle
 3. Click "Create New API Token"
 4. This will download a `kaggle.json` file
 5. Place this file in `~/.kaggle/kaggle.json` on your local machine
+6. Ensure it has the correct permissions: `chmod 600 ~/.kaggle/kaggle.json`
 
 ### 2. Local Development Setup
 
@@ -34,6 +36,12 @@ cd kaggle-team-leaderboard-fetcher
 
 # Install dependencies
 npm install
+
+# Set up Kaggle CLI in a virtual environment (recommended for Debian/Ubuntu-based systems)
+npm run setup:kaggle
+
+# Test Kaggle CLI setup
+npm run kaggle:test
 
 # Start the development server
 npm run start:dev
@@ -75,6 +83,23 @@ Response:
 
 - `NODE_ENV`: Application environment (development/production)
 - `PORT`: Server port (default: 3000)
+
+## Troubleshooting
+
+### Python Environment Issues
+
+If you encounter issues with the Kaggle CLI installation on Debian/Ubuntu systems, use the virtual environment approach:
+
+```bash
+# Create and activate a Python virtual environment
+python3 -m venv kaggle-env
+source kaggle-env/bin/activate
+
+# Install Kaggle inside the virtual environment
+pip install kaggle
+```
+
+The application is already configured to use the virtual environment when running Kaggle commands.
 
 ## Docker Configuration
 

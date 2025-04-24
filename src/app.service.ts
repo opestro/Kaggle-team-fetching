@@ -32,6 +32,21 @@ export class AppService {
   }
 
   /**
+   * Gets the Kaggle CLI command path based on the environment
+   * @returns The path to the Kaggle CLI executable
+   */
+  private getKagglePath(): string {
+    // Check if we're running in Docker (VIRTUAL_ENV will be set in docker-compose.yml)
+    if (process.env.VIRTUAL_ENV) {
+      // In Docker with virtual environment
+      return 'kaggle';
+    } else {
+      // Local environment with local virtual environment
+      return Kpath.join(process.cwd(), 'kaggle-env/bin/kaggle');
+    }
+  }
+
+  /**
    * Fetches the public leaderboard for a given Kaggle competition using 'view -s'.
    * Note: This might only return the top entries, not the full leaderboard.
    * @param competitionSlug The URL slug of the Kaggle competition (e.g., 'titanic').
@@ -45,7 +60,8 @@ export class AppService {
       // --- Step 1: Execute Kaggle CLI command ---
       // Use '--show'. Ensure no '-q' so headers are included.
       // Using the format from your latest working execution
-      const command = `kaggle competitions leaderboard "${competitionSlug}" --show`;
+      const kagglePath = this.getKagglePath();
+      const command = `${kagglePath} competitions leaderboard "${competitionSlug}" --show`;
       this.logger.log(`Executing Kaggle CLI command: ${command}`);
 
        // Execute the command and capture stdout/stderr
