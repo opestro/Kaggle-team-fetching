@@ -6,7 +6,12 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3001:3000"
+      - "3000:3000"
+    volumes:
+      - ~/.kaggle:/root/.kaggle
+      - ./kaggle-env:/app/kaggle-env
+    depends_on:
+      - kaggle-service
 
   kaggle-service:
     build:
@@ -14,7 +19,8 @@ services:
       dockerfile: Dockerfile.kaggle
     volumes:
       - ~/.kaggle:/root/.kaggle
+      - ./kaggle-env:/app/kaggle-env
     environment:
       - KAGGLE_USERNAME=${KAGGLE_USERNAME}
       - KAGGLE_KEY=${KAGGLE_KEY}
-    command: tail -f /dev/null # Keeps container running 
+    command: sh -c "python -m venv /app/kaggle-env && /app/kaggle-env/bin/pip install -r requirements.txt && tail -f /dev/null" 
