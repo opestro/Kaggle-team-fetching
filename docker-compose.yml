@@ -1,30 +1,26 @@
-version: '3'
+version: '3.8'
 
 services:
-  app:
-    build: .
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "3001:3000"
+      - "3000:3000"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./src:/app/src
     environment:
       - NODE_ENV=development
-      - PATH=/opt/kaggle-env/bin:${PATH}
-      - VIRTUAL_ENV=/opt/kaggle-env
-      # - KAGGLE_USERNAME=your_username
-      # - KAGGLE_KEY=your_api_key
-    command: >
-      bash -c "
-        mkdir -p /root/.kaggle &&
-        echo '{\"username\":\"$$KAGGLE_USERNAME\",\"key\":\"$$KAGGLE_KEY\"}' > /root/.kaggle/kaggle.json &&
-        chmod 600 /root/.kaggle/kaggle.json &&
-        npm run start:dev
-      "
-    # Add healthcheck to ensure the service is running properly
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s 
+    command: npm run start:dev
+
+  kaggle-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.kaggle
+    volumes:
+      - .:/app
+      - ~/.kaggle:/root/.kaggle
+    environment:
+      - KAGGLE_USERNAME=${KAGGLE_USERNAME}
+      - KAGGLE_KEY=${KAGGLE_KEY}
+    command: tail -f /dev/null # Keeps container running 

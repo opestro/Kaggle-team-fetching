@@ -49,11 +49,41 @@ npm run start:dev
 
 ### 3. Docker Setup
 
-```bash
-# Build and start the container
-docker-compose up --build
+#### Prerequisites
+- Docker and Docker Compose installed
+- Kaggle API credentials
 
-# The application will be available at http://localhost:3000
+#### Getting Started
+
+1. Clone the repository
+
+2. Set up Kaggle credentials:
+   - Copy `.env.example` to `.env`
+   - Update with your Kaggle credentials
+   ```
+   cp .env.example .env
+   ```
+
+3. Build and start the containers:
+   ```
+   docker-compose up -d
+   ```
+
+4. Access the NestJS application at http://localhost:3000
+
+#### Using the Kaggle Service
+
+The Kaggle service container has the Kaggle CLI installed. To use it:
+
+```bash
+# Execute commands in the Kaggle container
+docker-compose exec kaggle-service kaggle competitions list
+```
+
+#### Stopping the Services
+
+```bash
+docker-compose down
 ```
 
 ## API Endpoints

@@ -1,8 +1,12 @@
 node_modules
 npm-debug.log
-Dockerfile
-.dockerignore
+dist
 .git
-.gitignore
+.github
+.vscode
+.idea
 .env
-dist 
+*.env
+coverage
+test
+kaggle-env 
